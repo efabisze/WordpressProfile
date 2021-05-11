@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="WordPressProfileTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-11T18:43:27" hostname="NY-WL-0012960" time="19.296">
+  <properties/>
+  <testcase name="verifyAvatarProfile" classname="WordPressProfileTest" time="19.296"/>
+  <system-out><![CDATA[C:\Users\eric.fabiszewski\IdeaProjects\WordPressTest\src\test\resources\chromedriver.exe
+Open 'Login' page: https://wordpress.com/me
+Verified profile page is opened
+]]></system-out>
+  <system-err><![CDATA[Starting ChromeDriver 89.0.4389.23 (61b08ee2c50024bab004e48d2b1b083cdbdac579-refs/branch-heads/4389@{#294}) on port 8245
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+May 11, 2021 2:43:25 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+]]></system-err>
+</testsuite>
