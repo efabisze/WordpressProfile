@@ -20,7 +20,7 @@ public class MainBeforeAfter {
         if (System.getProperty("webdriver.chrome.driver") == null)
         {
             String path = System.getProperty("user.dir");
-            System.setProperty("webdriver.chrome.driver", path+"\\src\\test\\resources\\chromedriver.exe");// "C:\\Selenium\\chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", path+"\\src\\test\\resources\\chromedriver.exe");
         }
         if (System.getProperty("test.url") != null)
         {
