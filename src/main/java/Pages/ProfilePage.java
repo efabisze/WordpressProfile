@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Locale;
 
 public class ProfilePage {
     private WebDriver driver;
@@ -75,7 +76,7 @@ public class ProfilePage {
     @FindBy(css = ".components-form-toggle.is-checked")
     protected WebElement checkedHideGravatarProfileToggle;
 
-    @FindBy(id = "inspector-toggle-control-3")
+    @FindBy(css = ".components-form-toggle__input")
     protected WebElement hideGravatarProfileInput;
 
     @FindBy(css = ".button.form-button.is-primary")
@@ -128,6 +129,14 @@ public class ProfilePage {
 
     @FindBy(css = ".notice.is-error.profile-links__error.is-dismissable")
     protected WebElement notice;
+
+ //   @FindBy(css = "button[text='Create Site']")
+  //  protected WebElement createSiteButton;
+
+    @FindBy(css = ".button.profile-links-add-wordpress__cancel.form-button")
+    protected WebElement cancelWordpressSiteButton;
+
+    private By createSiteButton = new ByChained(By.xpath("//button[text()='Cancel']"));
 
     private By addLinkBy = new ByChained(By.cssSelector(".gridicon.gridicons-add-outline"));
     private By addLinkPopupOptions = new ByChained(By.cssSelector(".popover__menu-item"));
@@ -218,7 +227,6 @@ public class ProfilePage {
     public ProfilePage enableHideProfile()
     {
         Reporter.log("Enable or make sure hide profile toggle is on", true);
-        waitForVisibility(hideGravatarProfileInput);
 
         if(!hideGravatarProfileInput.isSelected())
             hideGravatarProfileInput.click();
@@ -229,8 +237,6 @@ public class ProfilePage {
     public ProfilePage disableHideProfile()
     {
         Reporter.log("Disable or make sure hide profile toggle is off", true);
-
-        waitForVisibility(hideGravatarProfileInput);
 
         if(hideGravatarProfileInput.isSelected())
             hideGravatarProfileInput.click();
@@ -353,6 +359,62 @@ public class ProfilePage {
         return this;
     }
 
+    public ProfilePage clickAddProfileLink()
+    {
+        Reporter.log("Click the add button on links section", true);
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addLinkButton);
+
+        waitForVisibility(addLinkButton);
+        addLinkButton.click();
+
+        return this;
+    }
+
+    public ProfilePage verifyAddEmptyWordpressSite()
+    {
+        Reporter.log("Verifying empty wordpress site", true);
+        String noLinks = "You have no public sites on WordPress.com yet, but if you like you can create one now. You may also add self-hosted WordPress sites here after installing Jetpack on them.";
+
+        WebElement option = null;
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addLinkButton);
+
+        waitForVisibility(addLinkButton);
+        addLinkButton.click();
+
+        waitForVisibility(addProfilePopupMenu);
+        List<WebElement> addOptions = addProfilePopupMenu.findElements(addLinkPopupOptions);
+
+        for(int i = 0; i < addOptions.size(); i++) {
+            option = addOptions.get(i);
+
+            String text = option.getText().trim().toLowerCase();
+
+            if (option.getText().trim().equalsIgnoreCase("add wordpress site"))
+            {
+                option.click();
+                break;
+            }
+        }
+
+        waitForVisibility(cancelWordpressSiteButton);
+        WebElement parent = cancelWordpressSiteButton.findElement(By.xpath("./..")).findElement(By.xpath(".//p"));
+        Assert.assertEquals(parent.getText().trim().toLowerCase(), noLinks.toLowerCase());
+
+        return this;
+    }
+
+    public ProfilePage clickCancelWordpressSite()
+    {
+        Reporter.log("Clicking the cancel button on Adding Wordpress Site", true);
+
+        waitForVisibility(cancelWordpressSiteButton);
+        cancelWordpressSiteButton.click();
+
+        return this;
+    }
+
     public ProfilePage addLink(String url, String descr)
     {
         Reporter.log("Adding a link to the profile : " + url, true);
@@ -373,7 +435,10 @@ public class ProfilePage {
             String text = option.getText().trim().toLowerCase();
 
             if (option.getText().trim().equalsIgnoreCase("add url"))
+            {
                 option.click();
+                break;
+            }
         }
 
         waitForVisibility(urlLinkInput);
@@ -399,6 +464,8 @@ public class ProfilePage {
 
         for(i = 0; i < descrList.size(); i++) {
             foundDescr = descrList.get(i);
+
+            Reporter.log("Description expected : " + descr + "\n Displayed link descr for : " + foundDescr.getText().trim(), true);
 
             if (foundDescr.getText().trim().equalsIgnoreCase(descr.trim()))
             {

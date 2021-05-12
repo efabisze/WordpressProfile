@@ -2,6 +2,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -47,8 +49,14 @@ public class MainBeforeAfter {
     {
         Reporter.log("Open 'Login' page: " + testUrl, true);
 
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOf(driver.findElement(By.id("usernameOrEmail"))));
+
         driver.findElement(By.id("usernameOrEmail")).sendKeys(user);
         driver.findElement(By.cssSelector(".button.form-button.is-primary")).click();
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOf(driver.findElement(By.name("password"))));
 
         driver.findElement(By.name("password")).sendKeys(password);
         driver.findElement(By.cssSelector("button.form-button.is-primary")).click();

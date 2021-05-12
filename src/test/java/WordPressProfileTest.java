@@ -81,6 +81,19 @@ public class WordPressProfileTest extends MainBeforeAfter{
     }
 
     @Test
+    public void verifyWhenNoWordPressSites() {
+
+        ProfilePage profilePagePage = new ProfilePage(driver);
+        Assert.assertTrue(profilePagePage.isPageOpened());
+        Reporter.log("Verified profile page is opened", true);
+
+        profilePagePage
+                .verifyAddEmptyWordpressSite()
+                .clickCancelWordpressSite()
+                .verifyEmptyLinkList();
+    }
+
+    @Test
     public void verifyAddExistingLinksProfile() {
         ProfilePage profilePagePage = new ProfilePage(driver);
         Assert.assertTrue(profilePagePage.isPageOpened());
